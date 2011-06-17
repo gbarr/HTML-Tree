@@ -4,6 +4,7 @@ use warnings;
 use strict;
 use integer;    # vroom vroom!
 use Carp ();
+use Scalar::Util ();
 use vars qw(@ISA $VERSION $DEBUG);
 
 #---------------------------------------------------------------------------
@@ -744,7 +745,7 @@ sub warning {
                 for ( my $i = 0; $i < @$c; ++$i ) {
                     if ( $c->[$i] eq $body ) {
                         splice( @$c, $i, 0, $self->{'_pos'} = $pos = $e );
-                        $e->{'_parent'} = $self;
+                        Scalar::Util::weaken($e->{'_parent'} = $self);
                         $already_inserted = 1;
                         print $indent,
                             " * inserting 'frameset' right before BODY.\n"
